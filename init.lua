@@ -127,6 +127,11 @@ do
   -- Enable break indent
   vim.o.breakindent = true
 
+  vim.o.expandtab = true
+  vim.o.tabstop = 2
+  vim.o.shiftwidth = 2
+  vim.o.softtabstop = 2
+
   -- Enable undo/redo changes even after closing and reopening a file
   vim.o.undofile = true
 
@@ -250,6 +255,13 @@ do
     desc = 'Highlight when yanking (copying) text',
     group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
     callback = function() vim.hl.on_yank() end,
+  })
+
+  vim.o.autoread = true
+  vim.api.nvim_create_autocmd({ 'FocusGained', 'BufEnter' }, {
+    desc = 'Reload buffers that changed on disk',
+    group = vim.api.nvim_create_augroup('kickstart-checktime', { clear = true }),
+    command = 'checktime',
   })
 end
 
@@ -413,6 +425,7 @@ do
       { '<leader>s', group = '[S]earch', mode = { 'n', 'v' } },
       { '<leader>t', group = '[T]oggle' },
       { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } }, -- Enable gitsigns recommended keymaps first
+      { '<leader>g', group = '[G]it' },
       { 'gr', group = 'LSP Actions', mode = { 'n' } },
     },
   }
@@ -736,7 +749,7 @@ do
     -- clangd = {},
     -- gopls = {},
     -- pyright = {},
-    -- tsc = {},
+    ts_ls = {},
     --
     -- Some languages (like rust) have entire language plugins that can be useful:
     --    https://github.com/mrcjkb/rustaceanvim
@@ -1014,16 +1027,16 @@ do
   --  Here are some example plugins that I've included in the Kickstart repository.
   --  Uncomment any of the lines below to enable them (you will need to restart nvim).
   --
-  -- require 'kickstart.plugins.debug'
-  -- require 'kickstart.plugins.indent_line'
-  -- require 'kickstart.plugins.lint'
-  -- require 'kickstart.plugins.autopairs'
-  -- require 'kickstart.plugins.neo-tree'
+  require 'kickstart.plugins.debug'
+  require 'kickstart.plugins.indent_line'
+  require 'kickstart.plugins.lint'
+  require 'kickstart.plugins.autopairs'
+  require 'kickstart.plugins.neo-tree'
 
   -- NOTE: You can add your own plugins, configuration, etc. in `lua/custom/plugins/*.lua`.
   --
   -- For independent modules, uncomment the convenience loader:
-  -- require 'custom.plugins'
+  require 'custom.plugins'
   --
   -- `custom.plugins` automatically loads files from that directory, but their
   -- order is unspecified. If plugins depend on each other, keep them in the same
